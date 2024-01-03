@@ -15,9 +15,3 @@ def pascal_triangle(n):
         triangle.append(row)
 
     return triangle
-
-# Example usage
-if __name__ == "__main__":
-    triangle = pascal_triangle(5)
-    print_triangle(triangle)
-
