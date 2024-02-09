@@ -1,125 +1,69 @@
 #!/usr/bin/python3
+"""N queens
 """
-N queens
-"""
+
 import sys
 
 
-def diagonals(results, N):
-    """
-    list with diagonals
-    """
-    # fill diagonals
-    diagonals = []
-    for i in results:
-        # up-left
-        it_row = i[0]
-        it_col = i[1]
-        while it_col >= 0 and it_col < N and it_row >= 0 and it_row < N:
-            if [it_row, it_col] not in diagonals:
-                diagonals.append([it_row, it_col])
-            it_row -= 1
-            it_col -= 1
-
-        # up-right
-        it_row = i[0]
-        it_col = i[1]
-        while it_col >= 0 and it_col < N and it_row >= 0 and it_row < N:
-            if [it_row, it_col] not in diagonals:
-                diagonals.append([it_row, it_col])
-            it_row -= 1
-            it_col += 1
-
-        # up-right
-        it_row = i[0]
-        it_col = i[1]
-        while it_col >= 0 and it_col < N and it_row >= 0 and it_row < N:
-            if [it_row, it_col] not in diagonals:
-                diagonals.append([it_row, it_col])
-            it_row += 1
-            it_col -= 1
-
-        # down-right
-        it_row = i[0]
-        it_col = i[1]
-        while it_col >= 0 and it_col < N and it_row >= 0 and it_row < N:
-            if [it_row, it_col] not in diagonals:
-                diagonals.append([it_row, it_col])
-            it_row += 1
-            it_col += 1
-
-    return diagonals
+def print_solution(board):
+    """print board"""
+    solution = []
+    for i in range(len(board)):
+        for j in range(len(board)):
+            if board[i][j] == 1:
+                solution.append([i, j])
+    print(solution)
 
 
-def isSafe(row, col, results, N):
-    """
-    know if safe a position
-    """
-    # validate columns
-    for _row in range(N):
-        if [_row, col] in results:
+def safe(board, row, col, n):
+    """Function to check if a queen can be placed on board"""
+    for c in range(col):
+        if board[row][c] == 1:
             return False
 
-    return not [row, col] in diagonals(results, N)
+    for r, c in zip(range(row, -1, -1),
+                    range(col, -1, -1)):
+        if board[r][c] == 1:
+            return False
+
+    for r, c in zip(range(row, n, 1),
+                    range(col, -1, -1)):
+        if board[r][c] == 1:
+            return False
+
+    return True
 
 
-def chess(N):
-    """
-    iterate the positions
-    """
-    result = []
-    row = 0
-    col = 0
+def solution(board, col, n):
+    if col == n:
+        print_solution(board)
+        return True
 
-    while row < N:
-        while col < N:
-            if isSafe(row, col, result, N):
-                result.append([row, col])
-                break
-            col += 1
+    c = False
+    for i in range(n):
+        if safe(board, i, col, n):
+            board[i][col] = 1
+            c = solution(board, col + 1, n) or c
+            board[i][col] = 0
+    return c
 
-        # if a new position not exists in results
-        if len(result) != (row + 1):
-            row -= 1
-            if row < 0:
-                break
-            col = result[row][1] + 1
-            del result[row]
-            continue
-        elif len(result) == N:
-            print(result)
-            col += 1
-            del result[row]
-            continue
-        row += 1
-        col = 0
-
-
-def start():
-    """
-    N queens
-    """
-    args = sys.argv
-
-    # Usage error
-    if len(args) is not 2:
-        print("Usage: nqueens N")
-        sys.exit(1)
-
-    # type value error
-    try:
-        int(args[1])
-    except:
-        print("N must be a number")
-        sys.exit(1)
-
-    # less than 4 error
-    if int(args[1]) < 4:
-        print("N must be at least 4")
-        sys.exit(1)
-
-    N = int(args[1])
-    chess(N)
 
 if __name__ == "__main__":
-    start()
+
+    if len(sys.argv) != 2:
+        print('Usage: nqueens N')
+        exit(1)
+
+    try:
+        n = int(sys.argv[1])
+
+    except Exception:
+        print('N must be a number')
+        exit(1)
+
+    if n < 4:
+        print('N must be at least 4')
+        exit(1)
+
+    board = [[0 for i in range(n)] for j in range(n)]
+    solution(board, 0, n)
