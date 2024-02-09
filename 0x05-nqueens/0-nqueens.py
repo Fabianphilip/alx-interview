@@ -30,7 +30,7 @@ def diagonals(results, N):
             it_row -= 1
             it_col += 1
 
-        # up-right
+        # down-left  (Fixed from up-right to down-left)
         it_row = i[0]
         it_col = i[1]
         while it_col >= 0 and it_col < N and it_row >= 0 and it_row < N:
@@ -102,14 +102,14 @@ def start():
     args = sys.argv
 
     # Usage error
-    if len(args) is not 2:
+    if len(args) != 2:
         print("Usage: nqueens N")
         sys.exit(1)
 
     # type value error
     try:
         int(args[1])
-    except:
+    except ValueError:
         print("N must be a number")
         sys.exit(1)
 
