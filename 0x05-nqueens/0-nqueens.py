@@ -15,7 +15,7 @@ def diagonals(results, N):
         # up-left
         it_row = i[0]
         it_col = i[1]
-        while 0 <= it_col < N and 0 <= it_row < N:
+        while it_col >= 0 and it_col < N and it_row >= 0 and it_row < N:
             if [it_row, it_col] not in diagonals:
                 diagonals.append([it_row, it_col])
             it_row -= 1
@@ -24,16 +24,16 @@ def diagonals(results, N):
         # up-right
         it_row = i[0]
         it_col = i[1]
-        while 0 <= it_col < N and 0 <= it_row < N:
+        while it_col >= 0 and it_col < N and it_row >= 0 and it_row < N:
             if [it_row, it_col] not in diagonals:
                 diagonals.append([it_row, it_col])
             it_row -= 1
             it_col += 1
 
-        # down-left
+        # up-right
         it_row = i[0]
         it_col = i[1]
-        while 0 <= it_col < N and 0 <= it_row < N:
+        while it_col >= 0 and it_col < N and it_row >= 0 and it_row < N:
             if [it_row, it_col] not in diagonals:
                 diagonals.append([it_row, it_col])
             it_row += 1
@@ -42,7 +42,7 @@ def diagonals(results, N):
         # down-right
         it_row = i[0]
         it_col = i[1]
-        while 0 <= it_col < N and 0 <= it_row < N:
+        while it_col >= 0 and it_col < N and it_row >= 0 and it_row < N:
             if [it_row, it_col] not in diagonals:
                 diagonals.append([it_row, it_col])
             it_row += 1
@@ -102,14 +102,14 @@ def start():
     args = sys.argv
 
     # Usage error
-    if len(args) != 2:
+    if len(args) is not 2:
         print("Usage: nqueens N")
         sys.exit(1)
 
     # type value error
     try:
         int(args[1])
-    except ValueError:
+    except:
         print("N must be a number")
         sys.exit(1)
 
@@ -123,4 +123,3 @@ def start():
 
 if __name__ == "__main__":
     start()
-
